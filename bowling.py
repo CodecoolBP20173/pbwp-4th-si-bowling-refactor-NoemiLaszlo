@@ -19,28 +19,23 @@ def score(game):
                     final_score += 10 - get_value(game[roll+1])
                 else:
                     final_score += get_value(game[roll+2])
-        # komment
-        if not has_frame_more_rolls:
-            frame += 1
-        # komment
-        if has_frame_more_rolls is True:  # in_first_half = not in_first_half
+        # if at last subframe of the frame or if the player rolls a strike, increase frame
+        if not has_frame_more_rolls or game[roll].upper() == 'X':
             has_frame_more_rolls = False
-        else:
-            has_frame_more_rolls = True
-        # komment
-        if game[roll].upper() == 'X':
-            has_frame_more_rolls = True
             frame += 1
+        # determine if frame has more rolls or frame should be increased
+        has_frame_more_rolls = not has_frame_more_rolls
     return final_score
 
 
-def get_value(char):
+def get_value(roll_symbol):
     '''This function returns the score of one roll'''
-    if char.isdigit() and len(char) == 1:
-        return int(char)
-    elif char.upper() == 'X' or char == '/':
+    if roll_symbol.isdigit() and len(roll_symbol) == 1:
+        # return roll result including and ignoring 0 as an input for sake of simplicity
+        return int(roll_symbol)
+    elif roll_symbol.upper() == 'X' or roll_symbol == '/':
         return 10
-    elif char == '-':
+    elif roll_symbol == '-':
         return 0
     else:
         raise ValueError()
